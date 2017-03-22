@@ -26,4 +26,9 @@ class SimpleGapRuleProgram {
         
         Console.log(environment.campsites)
     }
+    
+    public getAvailableCampsites() =>
+        environment.campsites.filter({
+            _.isReservationTimeAvailable(environment)
+        })
 }
