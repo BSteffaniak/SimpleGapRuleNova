@@ -1,0 +1,7 @@
+package "simplegaprule/models"
+
+import "nova/time/DateTime"
+
+trait Interval extends Model {
+    public DateTime startDate, endDate
+}
