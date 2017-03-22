@@ -8,16 +8,22 @@ import "nova/serialization/JsonSerializer"
 import "simplegaprule/models/CampspotEnvironment"
 
 class SimpleGapRuleProgram {
+    CampspotEnvironment environment
+    
     public static main(String[] args) {
+        let program = new SimpleGapRuleProgram(new File("test-case.json"))
+        
+        Console.waitForEnter()
+    }
+    
+    public construct(File file) {
         let serializer = new JsonSerializer()
         
         var HashMap<String, Object> map
-        map = (HashMap)serializer.parse(new File("test-case.json"))
+        map = (HashMap)serializer.parse(file)
         
-        let env = new CampspotEnvironment(map)
+        environment = new CampspotEnvironment(map)
         
-        Console.log(env.campsites)
-        
-        Console.waitForEnter()
+        Console.log(environment.campsites)
     }
 }
