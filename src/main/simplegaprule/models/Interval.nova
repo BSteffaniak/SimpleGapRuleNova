@@ -10,4 +10,7 @@ trait Interval extends Model {
         endDate.compareTo(other.startDate) >= 0 ||
         startDate.compareTo(other.endDate) <= 0 &&
         endDate.compareTo(other.endDate) >= 0
+    
+    public isBefore(Interval other) => endDate.compareTo(other.startDate) < 0
+    public isAfter(Interval other) => startDate.compareTo(other.endDate) > 0
 }
