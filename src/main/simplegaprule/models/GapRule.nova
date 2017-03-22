@@ -2,9 +2,10 @@ package "simplegaprule/models"
 
 import "nova/datastruct/HashMap"
 
-class GapRule extends Model implements Interval {
+class GapRule extends Model {
+    public Int gapSize
+    
     public construct(HashMap<String, Object> map) {
-        startDate = new DateTime((String)map["startDate"], "yyyy-MM-dd")
-        endDate = new DateTime((String)map["endDate"], "yyyy-MM-dd")
+        gapSize = Int.parseInt((String)map["gapSize"])
     }
 }
