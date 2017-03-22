@@ -4,4 +4,10 @@ import "nova/time/DateTime"
 
 trait Interval extends Model {
     public DateTime startDate, endDate
+    
+    public doesOverlap(Interval other) =>
+        startDate.compareTo(other.startDate) <= 0 &&
+        endDate.compareTo(other.startDate) >= 0 ||
+        startDate.compareTo(other.endDate) <= 0 &&
+        endDate.compareTo(other.endDate) >= 0
 }
