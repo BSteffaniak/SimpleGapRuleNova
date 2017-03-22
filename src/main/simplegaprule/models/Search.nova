@@ -1,0 +1,12 @@
+package "simplegaprule/models"
+
+import "nova/datastruct/HashMap"
+
+class Search extends Model {
+    // public DateTime startDate, endDate
+    
+    public construct(HashMap<String, Object> map) {
+        // startDate = new DateTime((String)map["startDate"], "yyyy-MM-dd")
+        // endDate = new DateTime((String)map["endDate"], "yyyy-MM-dd")
+    }
+}
