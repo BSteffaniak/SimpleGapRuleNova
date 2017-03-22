@@ -1,0 +1,24 @@
+package "simplegaprule/models"
+
+import "nova/datastruct/HashMap"
+
+class CampspotEnvironment extends Model {
+    public Search search
+    
+    public GapRule[] gapRules
+    public Campsite[] campsites
+    public Reservation[] reservations
+    
+    public construct(HashMap<String, Object> map) {
+        search = new Search((HashMap)map["search"])
+        
+        Object[] gapRuleArray = (Array)map["gapRules"]
+        gapRules = gapRuleArray.map({ new GapRule((HashMap)_) })
+        
+        Object[] campsiteArray = (Array)map["campsites"]
+        campsites = campsiteArray.map({ new Campsite((HashMap)_) })
+        
+        Object[] reservationArray = (Array)map["reservations"]
+        reservations = reservationArray.map({ new Reservation((HashMap)_) })
+    }
+}
