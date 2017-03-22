@@ -1,0 +1,15 @@
+package "simplegaprule/models"
+
+import "nova/datastruct/HashMap"
+
+class Campsite extends Model {
+    public Int id
+    public String name
+    
+    public construct(HashMap<String, Object> map) {
+        id = Int.parseInt((String)map["id"])
+        name = (String)map["name"]
+    }
+           
+    public toString() => "#id: " + '"' + name + '"'
+}
