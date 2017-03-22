@@ -1,0 +1,11 @@
+package "simplegaprule"
+
+class InvalidCampsiteException extends Exception {
+    public construct() {
+        this("Campsite does not exist in environment")
+    }
+    
+    public construct(String message) {
+        super(message)
+    }
+}
