@@ -17,6 +17,31 @@ class Campsite extends Model {
         environment.reservations.filter({
             _.campsiteId == id
         })
+    
+    /// Get whether the given reservationTime Search parameter is available at this Campsite.
+    /// 
+    /// environment: The environment that contains the campsite and reservations.
+    /// reservationTime: The time to check availability for. Start/end date
+    /// return: true if is available at the requested reservationTime, else false
+    public isReservationTimeAvailable(CampspotEnvironment environment, Search reservationTime = environment.search) -> Bool {
+        // Make sure the campsite exists within the environment that is being searched
+        if (!environment.campsites.contains(this)) {
+            throw new InvalidCampsiteException()
+        }
+        
+        // Fetch all reservations for the campsite
+        let reservations = getReservations(environment)
+        
+        if (reservations.any({ _.doesOverlap(reservationTime) })) {
+            return false // already reserved during this time
+        }
+        
+        // Get reservations adjacent to the target reservation time
+        let adjacent = reservations.filter({ _.isAdjacent(reservations, reservationTime) })
+        
+        // Make sure none violate any existing gap rules
+        return !adjacent.any({ _.doesViolateAnyGapRules(environment.gapRules, reservationTime) })
+    }
            
     public toString() => "#id: " + '"' + name + '"'
 }
