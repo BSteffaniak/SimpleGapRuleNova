@@ -27,17 +27,15 @@ __Running the project from command line__
 
 Open command line and navigate to the root project directory.
 
-If you are running on Windows, run the `SimpleGapRule test-case.json` command.
-
-If you are running on Mac, run the `./SimpleGapRule test-case.json` command.
+ * If you are running on Windows, run the `SimpleGapRule test-case.json` command.
+ * If you are running on Mac, run the `./SimpleGapRule test-case.json` command.
 
 __Running the unit tests from command line__
 
 Open command line and navigate to the root project directory.
 
-If you are running on Windows, run the `SimpleGapRuleTests` command.
-
-If you are running on Mac, run the `./SimpleGapRuleTests` command.
+ * If you are running on Windows, run the `SimpleGapRuleTests` command.
+ * If you are running on Mac, run the `./SimpleGapRuleTests` command.
 
 The output should resemble:
 
