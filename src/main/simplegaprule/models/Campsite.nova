@@ -43,5 +43,5 @@ class Campsite extends Model {
         return !adjacent.any({ _.doesViolateAnyGapRules(environment.gapRules, reservationTime) })
     }
            
-    public toString() => "#id: " + '"' + name + '"'
+    public toString() => '"' + name + '"'
 }
