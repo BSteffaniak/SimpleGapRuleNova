@@ -1,0 +1,47 @@
+package "simplegaprule"
+
+import "nova/io/File"
+
+import "simplegaprule/SimpleGapRuleProgram"
+
+import static "novex/nest/Nest"
+
+testable class GapRuleTests {
+    test givenTestCase() {
+        let rule = new SimpleGapRuleProgram(new File("test-case.json"));
+        
+        let available = rule.getAvailableCampsites()
+        
+        expect(available.count).toBe(4)
+        expectTrue("Daniel Boone Bungalow" == available[0].name)
+        expectTrue("Teddy Rosevelt Tent Site" == available[1].name)
+        expectTrue("Bear Grylls Cozy Cave" == available[2].name)
+        expectTrue("Wyatt Earp Corral" == available[3].name)
+    }
+    
+    test noOpenings() {
+        let rule = new SimpleGapRuleProgram(new File("test-folder/no-openings.json"));
+        
+        let available = rule.getAvailableCampsites()
+        
+        expect(available.count).toBe(0)
+    }
+    
+    test noReservations() {
+        let rule = new SimpleGapRuleProgram(new File("test-folder/no-reservations.json"));
+        
+        let available = rule.getAvailableCampsites()
+        
+        expect(available.count).toBe(rule.environment.campsites.count)
+        expect(rule.environment.reservations.count).toBe(0)
+    }
+    
+    test singleReservationConflict() {
+        let rule = new SimpleGapRuleProgram(new File("test-folder/one-reservation.json"))
+        
+        let available = rule.getAvailableCampsites()
+        
+        expect(available.count).toBe(rule.environment.campsites.count - 1)
+        expect(rule.environment.reservations.count).toBe(1)
+    }
+}
