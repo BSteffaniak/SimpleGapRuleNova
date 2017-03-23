@@ -11,4 +11,7 @@ class Reservation extends Model implements Interval {
         startDate = new DateTime((String)map["startDate"], "yyyy-MM-dd")
         endDate = new DateTime((String)map["endDate"], "yyyy-MM-dd")
     }
+    
+    public doesViolateAnyGapRules(GapRule[] rules, Search search) => rules.any({ doesViolateGapRule(_, search) })
+    public doesViolateGapRule(GapRule rule, Search search) => getGap(search) == rule.gapSize
 }
