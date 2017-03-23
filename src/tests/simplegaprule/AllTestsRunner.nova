@@ -1,10 +1,32 @@
 package "simplegaprule"
 
+import "nova/io/FancyOutputStream"
+
+import "novex/nest/TestResult"
+
 [TestSuite [ModelTests, GapRuleTests, FileInputTests]]
 class AllTestsRunner {
     public static main(String[] args) {
         let runner = new AllTestsRunner()
         
-        runner.runTests()
+        let unsucessful = new TestResult[]
+        
+        runner.runTests(result => {
+            if (!result.success) {
+                unsucessful.add(result)
+            }
+        })
+        
+        let fancy = new FancyOutputStream(headerPattern: "/\\")
+        
+        if (unsucessful.count > 0) {
+            fancy.writeHeader("#unsucessful.count Failure#{unsucessful.count == 1 ? "" : "s"}", pattern: ":'( ", symmetrical: true)
+            
+            unsucessful.forEach({
+                Console.log("#_")
+            })
+        } else {
+            fancy.writeHeader("All Successful", pattern: ":) ", symmetrical: true)
+        }
     }
 }
