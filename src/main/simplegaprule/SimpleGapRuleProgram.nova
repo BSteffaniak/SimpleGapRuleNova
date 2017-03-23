@@ -8,23 +8,48 @@ import "nova/serialization/JsonSerializer"
 import "simplegaprule/models/CampspotEnvironment"
 
 class SimpleGapRuleProgram {
-    CampspotEnvironment environment
+    visible CampspotEnvironment environment
+    
+    visible final static String DEFAULT_DATE_FORMAT = "yyyy-MM-dd"
     
     public static main(String[] args) {
-        let program = new SimpleGapRuleProgram(new File("test-case.json"))
+        if (args.count <= 1) {
+            throw new Exception("Expected input files as arguments; e.g. '" +
+                args.first + " filename1.json directoryName filenameN.json'");
+        }
         
-        Console.waitForEnter()
+        args.skip(1).map({ loadFile(_) })
+            .forEach({
+                _.forEach({
+                    ((SimpleGapRuleProgram)_).getAvailableCampsites().forEach({
+                        Console.log(_)
+                    })
+                })
+            })
+    }
+    
+    public static loadFile(String fileLocation) => loadFile(new File(fileLocation))
+    public static loadFile(File file) -> SimpleGapRuleProgram[] {
+        if (!file.exists) {
+            throw new Exception("Input file '#file.location' does not exist")
+        } else if (file.isDirectory) {
+            // Reduce recursively returned lists into a single list, or return empty list
+            return file.getChildFiles(true)
+                .filter({ _.extension.toLowerCase() == ".json" })
+                .map({ loadFile(_) })
+                .reduce({ _ + _ }, new SimpleGapRuleProgram[0])
+        } else if (!file.extension.toLowerCase() == ".json") {
+            throw new Exception("Invalid input file '#file.location'")
+        } else {
+            // Return list with single element
+            return [new SimpleGapRuleProgram(file)]
+        }
     }
     
     public construct(File file) {
         let serializer = new JsonSerializer()
         
-        var HashMap<String, Object> map
-        map = (HashMap)serializer.parse(file)
-        
-        environment = new CampspotEnvironment(map)
-        
-        Console.log(environment.campsites)
+        environment = new CampspotEnvironment((HashMap)serializer.parse(file))
     }
     
     public getAvailableCampsites() =>
