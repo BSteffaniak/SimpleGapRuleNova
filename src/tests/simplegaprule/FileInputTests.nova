@@ -1,0 +1,50 @@
+package "simplegaprule"
+
+import "simplegaprule/SimpleGapRuleProgram"
+
+import static "novex/nest/Nest"
+
+testable class FileInputTests {
+    test allTestCasesCount() {
+        let input = ["test-case.json", "test-folder"]
+        let result = input.map({ SimpleGapRuleProgram.loadFile(_) }).reduce({ _ + _ }, new SimpleGapRuleProgram[0])
+        
+        expectValue(result)
+        expect(result.count).toBe(4)
+    }
+    
+    test folderTestCasesCount() {
+        let input = ["test-folder"]
+        let result = input.map({ SimpleGapRuleProgram.loadFile(_) }).reduce({ _ + _ }, new SimpleGapRuleProgram[0])
+        
+        expectValue(result)
+        expect(result.count).toBe(3)
+    }
+    
+    test singleFileTestCasesCount() {
+        let input = ["test-case.json"]
+        let result = input.map({ SimpleGapRuleProgram.loadFile(_) }).reduce({ _ + _ }, new SimpleGapRuleProgram[0])
+        
+        expectValue(result)
+        expect(result.count).toBe(1)
+    }
+    
+    test nonExistentFile() {
+        let input = ["test-case.json", "test-folder"]
+        
+        try {
+            let result = input.map({ SimpleGapRuleProgram.loadFile(_) }).reduce({ _ + _ }, new SimpleGapRuleProgram[0])
+            
+            fail()
+        } catch (Exception e) {
+            
+        }
+    }
+    
+    test folderWithNoJson() {
+        let input = ["src"]
+        let result = input.map({ SimpleGapRuleProgram.loadFile(_) }).reduce({ _ + _ }, new SimpleGapRuleProgram[0])
+        
+        expect(result.count).toBe(0)
+    }
+}
