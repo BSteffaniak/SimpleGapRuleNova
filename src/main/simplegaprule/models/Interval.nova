@@ -5,6 +5,15 @@ import "nova/time/DateTime"
 trait Interval extends Model {
     public DateTime startDate, endDate
     
+    public getGap(Interval other) =>
+        isBefore(other) ?
+            other.startDate.dayOfMonth - endDate.dayOfMonth - 1 :
+            startDate.dayOfMonth - other.endDate.dayOfMonth - 1 {
+        if (doesOverlap(other)) {
+            throw new Exception("Cannot get gap from overlapping intervals #this and #other")
+        }
+    }
+    
     public doesOverlap(Interval other) =>
         startDate.compareTo(other.startDate) <= 0 &&
         endDate.compareTo(other.startDate) >= 0 ||
