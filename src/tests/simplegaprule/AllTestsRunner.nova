@@ -1,0 +1,10 @@
+package "simplegaprule"
+
+[TestSuite [ModelTests, GapRuleTests, FileInputTests]]
+class AllTestsRunner {
+    public static main(String[] args) {
+        let runner = new AllTestsRunner()
+        
+        runner.runTests()
+    }
+}
