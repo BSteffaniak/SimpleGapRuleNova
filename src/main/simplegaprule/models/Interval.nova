@@ -2,9 +2,15 @@ package "simplegaprule/models"
 
 import "nova/time/DateTime"
 
+/// Interface where common functions are kept for classes that contain a
+/// start and end date.
 trait Interval extends Model {
     public DateTime startDate, endDate
     
+    /// Get the days in the gap between the two intervals.
+    ///
+    /// other: The interval to get the gap between.
+    /// return: An int representation of the days gap.
     public getGap(Interval other) =>
         isBefore(other) ?
             other.startDate.dayOfMonth - endDate.dayOfMonth - 1 :
@@ -14,6 +20,10 @@ trait Interval extends Model {
         }
     }
     
+    /// Check if this interval overlaps the other interval.
+    /// 
+    /// other: The other interval to check if overlaps.
+    /// return: true if this interval overlaps the other.
     public doesOverlap(Interval other) =>
         startDate.compareTo(other.startDate) <= 0 &&
         endDate.compareTo(other.startDate) >= 0 ||
@@ -24,6 +34,15 @@ trait Interval extends Model {
         other.startDate.compareTo(startDate) >= 0 &&
         other.startDate.compareTo(endDate) <= 0
     
+    /// Check if this interval is after the given interval.
+    ///
+    /// other: The interval to compare to.
+    /// return: true if this interval is after other.
     public isBefore(Interval other) => endDate.compareTo(other.startDate) < 0
+    
+    /// Check if this interval is before the given interval.
+    ///
+    /// other: The interval to compare to.
+    /// return: true if this interval is before other.
     public isAfter(Interval other) => startDate.compareTo(other.endDate) > 0
 }

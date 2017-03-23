@@ -2,6 +2,8 @@ package "simplegaprule/models"
 
 import "nova/datastruct/HashMap"
 
+/// Model representing the whole campspot test case environment. Contains a
+/// Reservation Search interval, gap rules, campsites, and existing reservations.
 class CampspotEnvironment extends Model {
     public Search search
     

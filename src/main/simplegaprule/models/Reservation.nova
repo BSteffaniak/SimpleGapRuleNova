@@ -2,6 +2,8 @@ package "simplegaprule/models"
 
 import "nova/datastruct/HashMap"
 
+/// Model representing a Reservation to a Campsite. Contains a start date,
+/// end date, and corresponding campsite id.
 class Reservation extends Model implements Interval {
     public Int campsiteId
     
@@ -12,6 +14,12 @@ class Reservation extends Model implements Interval {
         endDate = new DateTime((String)map["endDate"], "yyyy-MM-dd")
     }
     
+    /// Check if this Reservation is the closest to the given search interval in comparison
+    /// to all of the given reservations.
+    /// 
+    /// allReservations: The reservations to compare against.
+    /// search: The interval to check if is adjacent to.
+    /// return: Whether or not this reservation is adjacent to the Search.
     public isAdjacent(Interval[] allReservations, Search search) =>
         !doesOverlap(search) &&
             getGap(search) < allReservations.filter({ _ != this })
@@ -19,6 +27,19 @@ class Reservation extends Model implements Interval {
                 .filter({ isBefore(search) == _.isBefore(search) })
                 .min({ _.getGap(search) })
     
+    /// Check if this Reservation violates any of the given gap rules in
+    /// relation to the given Search time interval.
+    /// 
+    /// rules: The rules that specify the sizes of the gaps.
+    /// search: The interval to compare the gaps against.
+    /// return: Whether any gap rules were violated.
     public doesViolateAnyGapRules(GapRule[] rules, Search search) => rules.any({ doesViolateGapRule(_, search) })
+    
+    /// Check if this Reservation violates the gap rule in relation to the
+    /// given Search time interval.
+    /// 
+    /// rule: The gap rule that specifies the size of the gap.
+    /// search: The interval to compare the gap against.
+    /// return: Whether the gap rule is violated.
     public doesViolateGapRule(GapRule rule, Search search) => getGap(search) == rule.gapSize
 }

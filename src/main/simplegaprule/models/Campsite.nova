@@ -4,6 +4,7 @@ import "nova/datastruct/HashMap"
 
 import "simplegaprule/InvalidCampsiteException"
 
+/// Model representing a Campsite with a name and id.
 class Campsite extends Model {
     public Int id
     public String name
@@ -13,6 +14,10 @@ class Campsite extends Model {
         name = (String)map["name"]
     }
     
+    /// Get the reservations for this Campsite on the given environment.
+    ///
+    /// environment: The environment to get the reservations from.
+    /// return: A List of reservations to this campsite.
     public getReservations(CampspotEnvironment environment) =>
         environment.reservations.filter({
             _.campsiteId == id

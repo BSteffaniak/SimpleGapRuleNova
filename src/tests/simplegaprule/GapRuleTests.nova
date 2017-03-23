@@ -6,6 +6,7 @@ import "simplegaprule/SimpleGapRuleProgram"
 
 import static "novex/nest/Nest"
 
+/// Test the functionality of the gap rule algorithm.
 testable class GapRuleTests {
     test givenTestCase() {
         let rule = new SimpleGapRuleProgram(new File("test-case.json"));

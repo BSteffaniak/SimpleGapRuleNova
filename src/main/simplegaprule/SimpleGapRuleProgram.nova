@@ -7,11 +7,30 @@ import "nova/serialization/JsonSerializer"
 
 import "simplegaprule/models/CampspotEnvironment"
 
+/// Simple gap rule implementation.
+/// 
+/// Gap rule:
+/// Most destination resorts don’t host guests who are willing to stay for only one night.
+/// Their guests are not simply passing through the area; they’ve often travelled far with
+/// lots of luggage specifically to stay there, and it’s not worth it for them to stay one
+/// night. As a result, a reservation system for resorts needs to prevent one night gaps in
+/// its reservation grid, or schedule of inventory. If one-night gaps occur on the grid,
+/// they will not be sold, and this results in lost income for the resort owner. For example,
+/// Campspot uses a one-night gap rule, as this is a common problem for camping resort
+/// owners. However, owners’ gap problems aren’t limited to one-night gaps. Some resorts
+/// only host guests who stay a minimum three or four nights. Those resorts may want to
+/// prevent one-, two-, and three-night gaps.
+/// 
+/// author: Braden Steffaniak
 class SimpleGapRuleProgram {
     visible CampspotEnvironment environment
     
     visible final static String DEFAULT_DATE_FORMAT = "yyyy-MM-dd"
     
+    /// Command line gap rule runner. Takes files as input and outputs the results of the
+    /// gap rule to the standard output.
+    /// 
+    /// args: The input json file locations to perform the gap rule test on.
     public static main(String[] args) {
         if (args.count <= 1) {
             throw new Exception("Expected input files as arguments; e.g. '" +
@@ -28,7 +47,17 @@ class SimpleGapRuleProgram {
             })
     }
     
+    /// Load a file from a given fileLocation String.
+    /// 
+    /// fileLocation: The location of the file relative to the application's working directory.
+    /// return: The list of runnable test cases.
     public static loadFile(String fileLocation) => loadFile(new File(fileLocation))
+    
+    /// Load test cases from the given file. If the file is a directory, will search
+    /// recursively for json files.
+    /// 
+    /// file: The file or directory to load the test case(s) from.
+    /// return: The list of runnable test cases.
     public static loadFile(File file) -> SimpleGapRuleProgram[] {
         if (!file.exists) {
             throw new Exception("Input file '#file.location' does not exist")
@@ -46,12 +75,19 @@ class SimpleGapRuleProgram {
         }
     }
     
+    /// Initialize the SimpleGapRule instance fields. Prepare for running test case.
+    /// 
+    /// jsonFile: The file to load the test data from.
     public construct(File file) {
         let serializer = new JsonSerializer()
         
         environment = new CampspotEnvironment((HashMap)serializer.parse(file))
     }
     
+    /// Get the available Campsites with the specified Search date criteria given
+    /// in the test case json file.
+    /// 
+    /// return: A List of Campsites.
     public getAvailableCampsites() =>
         environment.campsites.filter({
             _.isReservationTimeAvailable(environment)
