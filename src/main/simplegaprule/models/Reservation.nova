@@ -12,6 +12,13 @@ class Reservation extends Model implements Interval {
         endDate = new DateTime((String)map["endDate"], "yyyy-MM-dd")
     }
     
+    public isAdjacent(Interval[] allReservations, Search search) =>
+        !doesOverlap(search) &&
+            getGap(search) < allReservations.filter({ _ != this })
+                .filter({ !_.doesOverlap(search) })
+                .filter({ isBefore(search) == _.isBefore(search) })
+                .min({ _.getGap(search) })
+    
     public doesViolateAnyGapRules(GapRule[] rules, Search search) => rules.any({ doesViolateGapRule(_, search) })
     public doesViolateGapRule(GapRule rule, Search search) => getGap(search) == rule.gapSize
 }
