@@ -14,10 +14,10 @@ testable class GapRuleTests {
         let available = rule.getAvailableCampsites()
         
         expect(available.count).toBe(4)
-        expectTrue("Daniel Boone Bungalow" == available[0].name)
-        expectTrue("Teddy Rosevelt Tent Site" == available[1].name)
-        expectTrue("Bear Grylls Cozy Cave" == available[2].name)
-        expectTrue("Wyatt Earp Corral" == available[3].name)
+        expect("Daniel Boone Bungalow" == available[0].name).toBe(true)
+        expect("Teddy Rosevelt Tent Site" == available[1].name).toBe(true)
+        expect("Bear Grylls Cozy Cave" == available[2].name).toBe(true)
+        expect("Wyatt Earp Corral" == available[3].name).toBe(true)
     }
     
     test noOpenings() {

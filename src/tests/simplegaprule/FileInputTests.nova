@@ -10,7 +10,7 @@ testable class FileInputTests {
         let input = ["test-case.json", "test-folder"]
         let result = input.map({ SimpleGapRuleProgram.loadFile(_) }).reduce({ _ + _ }, new SimpleGapRuleProgram[0])
         
-        expectValue(result)
+        expect(result).toNotBe(null)
         expect(result.count).toBe(4)
     }
     
@@ -18,7 +18,7 @@ testable class FileInputTests {
         let input = ["test-folder"]
         let result = input.map({ SimpleGapRuleProgram.loadFile(_) }).reduce({ _ + _ }, new SimpleGapRuleProgram[0])
         
-        expectValue(result)
+        expect(result).toNotBe(null)
         expect(result.count).toBe(3)
     }
     
@@ -26,7 +26,7 @@ testable class FileInputTests {
         let input = ["test-case.json"]
         let result = input.map({ SimpleGapRuleProgram.loadFile(_) }).reduce({ _ + _ }, new SimpleGapRuleProgram[0])
         
-        expectValue(result)
+        expect(result).toNotBe(null)
         expect(result.count).toBe(1)
     }
     
